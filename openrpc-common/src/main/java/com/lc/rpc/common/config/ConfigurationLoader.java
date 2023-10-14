@@ -41,7 +41,7 @@ public class ConfigurationLoader implements ApplicationContextAware, BeanFactory
         // 2, 从 OpenRPC 指定的配置文件中获取配置 --> 如果配置重复，会覆盖 Spring Environment 中的配置
         loadPropertiesFromAnnotation(beanFactory, properties);
         // 3, 集中存储到 Configuration
-        System.out.println(properties.getProperty("openrpc.service.name"));
+        System.out.println("ConfigurationLoader：" + properties.getProperty("openrpc.service.name"));
         Configuration.setProperties(properties);
     }
 

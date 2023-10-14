@@ -1,5 +1,6 @@
 package com.lc.rpc.common.util;
 
+import com.alibaba.fastjson.JSON;
 import com.lc.rpc.common.annotation.OrpcReference;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -28,6 +29,7 @@ public class ReferenceInjectBeanPostProcessor implements BeanPostProcessor, Bean
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         // 获取 bean 所有属性字段
         Field[] fields = bean.getClass().getDeclaredFields();
+        System.out.println("ReferenceInjectBeanPostProcessor：" + JSON.toJSONString(fields));
         for (Field field : fields) {
             // 字段是否被 @MyInject 修饰
             if (field.isAnnotationPresent(OrpcReference.class)) {
