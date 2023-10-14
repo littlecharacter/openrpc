@@ -1,7 +1,7 @@
-package com.lc.rpc.common.util;
+package com.lc.rpc.harbor.processor;
 
 import com.alibaba.fastjson.JSON;
-import com.lc.rpc.common.annotation.OrpcService;
+import com.lc.rpc.harbor.annotation.OrpcService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

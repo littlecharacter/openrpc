@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>com.lc</groupId>
-            <artifactId>openrpc-common</artifactId>
+            <artifactId>openrpc-harbor</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

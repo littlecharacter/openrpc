@@ -1,4 +1,4 @@
-package com.lc.rpc.common.annotation;
+package com.lc.rpc.harbor.annotation;
 
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,7 @@
-package com.lc.rpc.common.annotation;
+package com.lc.rpc.harbor.annotation;
 
-import com.lc.rpc.common.config.ConfigurationLoader;
-import com.lc.rpc.common.util.ReferenceInjectBeanPostProcessor;
-import com.lc.rpc.common.util.ServiceApplicationListener;
+import com.lc.rpc.harbor.processor.ConfigurationLoader;
+import com.lc.rpc.harbor.processor.ServiceApplicationListener;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -17,8 +16,7 @@ import java.lang.annotation.*;
 @Import({
         ConfigurationLoader.class,
         ServiceApplicationListener.class,
-        ReferenceInjectBeanPostProcessor.class
 })
-public @interface EnableOrpc {
+public @interface EnableOrpcProvider {
     String path() default "";
 }

@@ -1,4 +1,4 @@
-package com.lc.rpc.common.config;
+package com.lc.rpc.common;
 
 import java.util.Properties;
 

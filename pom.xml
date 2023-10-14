@@ -19,8 +19,11 @@
     <modules>
         <module>openrpc-consumer</module>
         <module>openrpc-provider</module>
+        <module>openrpc-all</module>
 
         <module>openrpc-container</module>
+
+        <module>openrpc-harbor</module>
 
         <module>openrpc-common</module>
 
@@ -34,7 +37,6 @@
         <module>openrpc-monitor</module>
 
         <module>openrpc-demo</module>
-        <module>openrpc-all</module>
     </modules>
 
     <properties>

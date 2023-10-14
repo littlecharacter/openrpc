@@ -1,7 +1,7 @@
-package com.lc.rpc.common.annotation;
+package com.lc.rpc.harbor.annotation;
 
-import com.lc.rpc.common.config.ConfigurationLoader;
-import com.lc.rpc.common.util.ReferenceInjectBeanPostProcessor;
+import com.lc.rpc.harbor.processor.ConfigurationLoader;
+import com.lc.rpc.harbor.processor.ReferenceInjectBeanPostProcessor;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;

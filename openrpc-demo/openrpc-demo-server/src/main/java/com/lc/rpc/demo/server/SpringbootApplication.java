@@ -1,6 +1,6 @@
 package com.lc.rpc.demo.server;
 
-import com.lc.rpc.common.annotation.EnableOrpc;
+import com.lc.rpc.harbor.annotation.EnableOrpc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
