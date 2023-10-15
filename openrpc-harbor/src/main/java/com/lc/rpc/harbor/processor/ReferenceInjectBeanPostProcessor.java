@@ -2,6 +2,7 @@ package com.lc.rpc.harbor.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.lc.rpc.harbor.annotation.OrpcReference;
+import com.lc.rpc.proxy.OrpcProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -31,7 +32,7 @@ public class ReferenceInjectBeanPostProcessor implements BeanPostProcessor, Bean
         Field[] fields = bean.getClass().getDeclaredFields();
         System.out.println("ReferenceInjectBeanPostProcessor：" + JSON.toJSONString(fields));
         for (Field field : fields) {
-            // 字段是否被 @MyInject 修饰
+            // 字段是否被 @OrpcReference 修饰
             if (field.isAnnotationPresent(OrpcReference.class)) {
                 // 1，TODO 从注册中心拉取服务注册信息
                 // 2，TODO 构建Cluster负载均衡 + Server创建、启动连接服务端
@@ -47,16 +48,19 @@ public class ReferenceInjectBeanPostProcessor implements BeanPostProcessor, Bean
                 try {
                     Object obj;
                     if (beanFactory.containsBeanDefinition(name)) {
+                        System.out.println("ReferenceInjectBeanPostProcessor：代理对象从Spring工厂获得");
                         obj = beanFactory.getBean(name);
                     } else {
                         BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(type);
                         BeanDefinition definition = builder.getBeanDefinition();
                         beanFactory.registerBeanDefinition(name, definition);
-                        obj = type.newInstance();
+                        // obj = type.newInstance();
+                        System.out.println("ReferenceInjectBeanPostProcessor：代理对象从代理工厂获得");
+                        obj = OrpcProxyFactory.create(type);
                         beanFactory.registerSingleton(name, obj);
                     }
                     field.set(bean, obj);
-                } catch (InstantiationException | IllegalAccessException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }

@@ -1,5 +1,6 @@
 package com.lc.rpc.demo.client.controller;
 
+import com.lc.rpc.demo.client.service.GreetService;
 import com.lc.rpc.demo.client.service.WelcomeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,16 @@ import javax.annotation.Resource;
 public class WelcomeController {
     @Resource
     private WelcomeService welcomeService;
+    @Resource
+    private GreetService greetService;
 
     @RequestMapping("/welcome")
     public String welcome(String name) {
         return welcomeService.welcome(name);
+    }
+
+    @RequestMapping("/greet")
+    public String greet(String name) {
+        return greetService.greet(name);
     }
 }
