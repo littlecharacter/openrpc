@@ -20,6 +20,7 @@ public class ServiceApplicationListener implements ApplicationListener<Applicati
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        System.out.println("ServiceApplicationListener：执行 setApplicationContext...");
         this.applicationContext = applicationContext;
     }
 

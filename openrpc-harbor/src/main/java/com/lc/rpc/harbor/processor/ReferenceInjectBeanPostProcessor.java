@@ -23,11 +23,13 @@ public class ReferenceInjectBeanPostProcessor implements BeanPostProcessor, Bean
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        System.out.println("ReferenceInjectBeanPostProcessor：执行 setBeanFactory...");
         this.beanFactory = (DefaultListableBeanFactory) beanFactory;
     }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println("ReferenceInjectBeanPostProcessor：执行 postProcessBeforeInitialization...");
         // 获取 bean 所有属性字段
         Field[] fields = bean.getClass().getDeclaredFields();
         System.out.println("ReferenceInjectBeanPostProcessor：" + JSON.toJSONString(fields));
