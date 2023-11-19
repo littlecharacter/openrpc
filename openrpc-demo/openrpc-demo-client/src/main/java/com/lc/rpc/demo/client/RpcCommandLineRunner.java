@@ -17,6 +17,8 @@ public class RpcCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        System.out.println(welcomeService.welcome("zhangsan"));
+        System.out.println(welcomeService.welcome("lisi"));
         System.out.println(welcomeService.welcome("wangwu"));
     }
 }
