@@ -9,10 +9,11 @@ public class OrpcProxyFactory {
     private static ConcurrentHashMap<String, Object> proxyMap = new ConcurrentHashMap<>();
 
     public static <T> T create(Class<?> clazz) {
-        String key = clazz.getName();
+        String serviceName = clazz.getName();
+        System.out.println("serviceName：" + serviceName);
         Object proxy;
-        if (proxyMap.containsKey(key)) {
-            proxy = proxyMap.get(key);
+        if (proxyMap.containsKey(serviceName)) {
+            proxy = proxyMap.get(serviceName);
         } else {
             proxy = Proxy.newProxyInstance(clazz.getClassLoader(),
                     new Class<?>[]{clazz}, new InvocationHandler() {
@@ -27,7 +28,7 @@ public class OrpcProxyFactory {
                     });
         }
         if (proxy != null) {
-            proxyMap.put(key, proxy);
+            proxyMap.put(serviceName, proxy);
         }
         return (T) proxy;
     }
