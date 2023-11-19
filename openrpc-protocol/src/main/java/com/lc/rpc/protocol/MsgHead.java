@@ -27,6 +27,10 @@ public class MsgHead implements Serializable {
         return this.head;
     }
 
+    public void setHead(byte[] head) {
+        System.arraycopy(head, 0, this.head, 0, this.head.length);
+    }
+
     public byte getMagicHigh() {
         return this.head[0];
     }
