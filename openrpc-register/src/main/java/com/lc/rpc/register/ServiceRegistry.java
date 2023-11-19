@@ -8,7 +8,7 @@ public interface ServiceRegistry {
      * @param serviceName 服务名称
      * @param serviceAddress ip:port
      */
-    void registry(String serviceName, String serviceAddress);
+    void registry(String serviceName, String serviceAddress, String role);
 
     /**
      * 服务发现
