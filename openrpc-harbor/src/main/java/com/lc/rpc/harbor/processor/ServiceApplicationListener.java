@@ -1,7 +1,11 @@
 package com.lc.rpc.harbor.processor;
 
 import com.alibaba.fastjson.JSON;
+import com.lc.rpc.common.Configuration;
+import com.lc.rpc.common.Constant;
 import com.lc.rpc.harbor.annotation.OrpcService;
+import com.lc.rpc.register.ServiceRegister;
+import com.lc.rpc.register.impl.ZkServiceRegister;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -9,6 +13,8 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 /**
@@ -27,12 +33,28 @@ public class ServiceApplicationListener implements ApplicationListener<Applicati
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof ContextRefreshedEvent) {
-            // 1，把这些 bean 生成代理：Map<服务接口的权限定名，Invoker代理>
+            // 1，TODO 把这些 bean 生成代理：Map<服务接口的权限定名，Invoker代理>
             Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(OrpcService.class);
             System.out.println("ServiceApplicationListener：" + JSON.toJSONString(beansWithAnnotation));
-            beansWithAnnotation.forEach((key, value) -> System.out.println("beanName:" + key + ", bean" + value));
             // 2，TODO 启动服务端
+
             // 3，TODO 服务注册
+            InetAddress address;
+            try {
+                address = InetAddress.getLocalHost();
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
+            String serviceAddress = address.getHostAddress() + ":" + Configuration.getProperty(Constant.OPENRPC_SERVICE_PORT);
+            ServiceRegister register = new ZkServiceRegister();
+            beansWithAnnotation.forEach((beanName, bean) -> {
+                System.out.println("beanName:" + beanName + ", bean" + bean);
+                Class<?> clazz = bean.getClass();
+                for (Class<?> face : clazz.getInterfaces()) {
+                    System.out.println(face.getName());
+                    register.registry(face.getName(), serviceAddress, "providers");
+                }
+            });
         }
     }
 

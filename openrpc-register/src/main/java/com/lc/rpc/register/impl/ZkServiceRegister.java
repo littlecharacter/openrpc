@@ -2,7 +2,7 @@ package com.lc.rpc.register.impl;
 
 import com.lc.rpc.common.Configuration;
 import com.lc.rpc.common.Constant;
-import com.lc.rpc.register.ServiceRegistry;
+import com.lc.rpc.register.ServiceRegister;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ZkServiceRegistry implements ServiceRegistry {
+public class ZkServiceRegister implements ServiceRegister {
     private CuratorFramework zkClient;
     private Map<String, List<String>> nodeMap = new HashMap<>();
 
-    public ZkServiceRegistry() {
+    public ZkServiceRegister() {
         zkClient = CuratorFrameworkFactory.builder()
                 // 格式：zk1:2181,zk2:2181,zk3:2181
                 .connectString(Configuration.getProperty(Constant.OPENRPC_REGISTER_ADDRESS))
@@ -99,7 +99,7 @@ public class ZkServiceRegistry implements ServiceRegistry {
     //     properties.setProperty(Constant.OPENRPC_REGISTER_ADDRESS, "zk:2181,zk:2182,zk:2183");
     //     Configuration.setProperties(properties);
     //
-    //     ZkServiceRegistry register = new ZkServiceRegistry();
+    //     ServiceRegister register = new ZkServiceRegister();
     //     register.registry("com.lc.rpc.demo.contract.HelloService", "192.168.1.9:10926", "providers");
     //
     //     System.out.println(register.discover("com.lc.rpc.demo.contract.HelloService"));

@@ -2,7 +2,7 @@ package com.lc.rpc.register;
 
 import java.util.List;
 
-public interface ServiceRegistry {
+public interface ServiceRegister {
     /**
      * 服务注册
      * @param serviceName 服务名称
