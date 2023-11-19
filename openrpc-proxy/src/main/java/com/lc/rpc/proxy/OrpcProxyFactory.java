@@ -18,6 +18,10 @@ public class OrpcProxyFactory {
                     new Class<?>[]{clazz}, new InvocationHandler() {
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                            // 1，获取服务 - cluster
+                            // 2，构造请求
+                            // 3，调用服务
+                            // 4，获取结果
                             return "hi," + args[0];
                         }
                     });

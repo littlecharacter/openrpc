@@ -43,10 +43,15 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
-        <!-- module -->
+        <!-- module:这里一股脑儿先引入完，后面再调整 -->
         <dependency>
             <groupId>com.lc</groupId>
             <artifactId>openrpc-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lc</groupId>
+            <artifactId>openrpc-cluster</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
