@@ -9,8 +9,8 @@ import java.io.Serializable;
 public class RequestBody implements Serializable {
     private String className;
     private String methodName;
-    private Class<?>[] types;
-    private Object[] params;
+    private Class<?>[] paramTypes;
+    private Object[] paramValues;
 
     public String getClassName() {
         return className;
@@ -28,19 +28,19 @@ public class RequestBody implements Serializable {
         this.methodName = methodName;
     }
 
-    public Class<?>[] getTypes() {
-        return types;
+    public Class<?>[] getParamTypes() {
+        return paramTypes;
     }
 
-    public void setTypes(Class<?>[] types) {
-        this.types = types;
+    public void setParamTypes(Class<?>[] paramTypes) {
+        this.paramTypes = paramTypes;
     }
 
-    public Object[] getParams() {
-        return params;
+    public Object[] getParamValues() {
+        return paramValues;
     }
 
-    public void setParams(Object[] params) {
-        this.params = params;
+    public void setParamValues(Object[] paramValues) {
+        this.paramValues = paramValues;
     }
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.lc.rpc.common.Configuration;
 import com.lc.rpc.common.Constant;
 import com.lc.rpc.harbor.annotation.OrpcService;
+import com.lc.rpc.proxy.ServerProxyFactory;
 import com.lc.rpc.register.ServiceRegister;
 import com.lc.rpc.register.impl.ZkServiceRegister;
 import org.springframework.beans.BeansException;
@@ -36,6 +37,7 @@ public class ServiceApplicationListener implements ApplicationListener<Applicati
             // 1，TODO 把这些 bean 生成代理：Map<服务接口的权限定名，Invoker代理>
             Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(OrpcService.class);
             System.out.println("ServiceApplicationListener：" + JSON.toJSONString(beansWithAnnotation));
+            ServerProxyFactory.build(beansWithAnnotation);
             // 2，TODO 启动服务端
 
             // 3，TODO 服务注册

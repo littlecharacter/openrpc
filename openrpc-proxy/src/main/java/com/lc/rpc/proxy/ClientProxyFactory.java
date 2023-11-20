@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class OrpcProxyFactory {
+public class ClientProxyFactory {
     private static ConcurrentHashMap<String, Object> proxyMap = new ConcurrentHashMap<>();
 
     public static <T> T create(Class<?> clazz) {

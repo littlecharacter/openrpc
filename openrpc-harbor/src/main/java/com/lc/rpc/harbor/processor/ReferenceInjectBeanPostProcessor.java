@@ -2,7 +2,7 @@ package com.lc.rpc.harbor.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.lc.rpc.harbor.annotation.OrpcReference;
-import com.lc.rpc.proxy.OrpcProxyFactory;
+import com.lc.rpc.proxy.ClientProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -58,7 +58,7 @@ public class ReferenceInjectBeanPostProcessor implements BeanPostProcessor, Bean
                         beanFactory.registerBeanDefinition(name, definition);
                         // obj = type.newInstance();
                         System.out.println("ReferenceInjectBeanPostProcessor：代理对象从代理工厂获得");
-                        obj = OrpcProxyFactory.create(type);
+                        obj = ClientProxyFactory.create(type);
                         beanFactory.registerSingleton(name, obj);
                     }
                     field.set(bean, obj);
