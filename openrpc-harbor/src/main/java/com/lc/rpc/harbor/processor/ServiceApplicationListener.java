@@ -34,13 +34,13 @@ public class ServiceApplicationListener implements ApplicationListener<Applicati
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof ContextRefreshedEvent) {
-            // 1，TODO 把这些 bean 生成代理：Map<服务接口的权限定名，Invoker代理>
+            // 1，把这些 bean 生成代理：Map<服务接口的权限定名，Invoker代理>
             Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(OrpcService.class);
             System.out.println("ServiceApplicationListener：" + JSON.toJSONString(beansWithAnnotation));
             ServerProxyFactory.build(beansWithAnnotation);
             // 2，TODO 启动服务端
 
-            // 3，TODO 服务注册
+            // 3，服务注册
             InetAddress address;
             try {
                 address = InetAddress.getLocalHost();
