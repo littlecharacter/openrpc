@@ -1,4 +1,4 @@
-package com.lc.rpc.cluster;
+package com.lc.rpc.remoting;
 
 /**
  * @author gujixian

@@ -1,6 +1,7 @@
 package com.lc.rpc.harbor.processor;
 
 import com.alibaba.fastjson.JSON;
+import com.lc.rpc.cluster.OrpcServerPool;
 import com.lc.rpc.common.Configuration;
 import com.lc.rpc.common.Constant;
 import com.lc.rpc.harbor.annotation.OrpcService;
@@ -15,6 +16,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
 
@@ -38,9 +40,7 @@ public class ServiceApplicationListener implements ApplicationListener<Applicati
             Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(OrpcService.class);
             System.out.println("ServiceApplicationListener：" + JSON.toJSONString(beansWithAnnotation));
             ServerProxyFactory.build(beansWithAnnotation);
-            // 2，TODO 启动服务端
-
-            // 3，服务注册
+            // 2，启动服务端；3，服务注册
             InetAddress address;
             try {
                 address = InetAddress.getLocalHost();
@@ -54,6 +54,9 @@ public class ServiceApplicationListener implements ApplicationListener<Applicati
                 Class<?> clazz = bean.getClass();
                 for (Class<?> face : clazz.getInterfaces()) {
                     System.out.println(face.getName());
+                    // 2，启动服务端
+                    OrpcServerPool.buildServer(face.getName(), new InetSocketAddress(address, Configuration.getProperty(Constant.OPENRPC_SERVICE_PORT)));
+                    // 3，服务注册
                     register.registry(face.getName(), serviceAddress, "providers");
                 }
             });

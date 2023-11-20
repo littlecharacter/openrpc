@@ -1,5 +1,8 @@
 package com.lc.rpc.proxy;
 
+import com.lc.rpc.cluster.OrpcServerPool;
+import com.lc.rpc.remoting.OrpcServer;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -20,6 +23,7 @@ public class ClientProxyFactory {
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                             // 1，获取服务 - cluster
+                            OrpcServer server = OrpcServerPool.getServer(clazz.getName());
                             // 2，构造请求
                             // 3，调用服务
                             // 4，获取结果
