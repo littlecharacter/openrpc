@@ -14,7 +14,6 @@ public abstract class AbstractServer implements OrpcServer {
 
     public AbstractServer(InetSocketAddress address) {
         this.address = address;
-        startServer();
     }
 
     @Override

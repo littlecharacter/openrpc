@@ -22,34 +22,36 @@ public class NettyServer extends AbstractServer {
 
     public NettyServer(InetSocketAddress address, ServerCallback serverCallback) {
         super(address);
-        this.serverCallback = serverCallback;
+        startServer();
+        NettyServer.serverCallback = serverCallback;
     }
 
     @Override
     public void startServer() {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() + 1);
-        ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(bossGroup, workerGroup);
-        bootstrap.channel(NioServerSocketChannel.class);
-        bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            protected void initChannel(SocketChannel sc) {
-                ChannelPipeline pipeline = sc.pipeline();
-                pipeline.addLast(new MsgDecoder<RequestBody>());
-                pipeline.addLast(new ReceiveHandler());
+        new Thread(() -> {
+            EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+            EventLoopGroup workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() + 1);
+            ServerBootstrap bootstrap = new ServerBootstrap();
+            ChannelFuture bind = bootstrap.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel sc) {
+                            ChannelPipeline pipeline = sc.pipeline();
+                            pipeline.addLast(new MsgDecoder<RequestBody>());
+                            pipeline.addLast(new ReceiveHandler());
+                        }
+                    }).bind(address.getPort());
+            try {
+                bind.sync().channel().closeFuture().sync();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // 释放资源
+                bossGroup.shutdownGracefully();
+                workerGroup.shutdownGracefully();
             }
-        });
-        try {
-            ChannelFuture f = bootstrap.bind(8765).sync();
-            f.channel().closeFuture().sync();
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 释放资源
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
-        }
-        System.out.println("通道关闭!");
+            System.out.println("通道关闭!");
+        }).start();
     }
 
     private static class ReceiveHandler extends ChannelInboundHandlerAdapter {

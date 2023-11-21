@@ -39,12 +39,15 @@ public final class ServerProxyFactory {
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
+        // 2，启动服务端
+        OrpcServerPool.buildServer(new InetSocketAddress(address, Integer.parseInt(Configuration.getProperty(Constant.OPENRPC_SERVICE_PORT))), new BizServerCallback());
+
         String serviceAddress = address.getHostAddress() + ":" + Configuration.getProperty(Constant.OPENRPC_SERVICE_PORT);
         ServiceRegister register = new ZkServiceRegister();
         beansWithAnnotation.forEach((beanName, bean) -> {
             Class<?> clazz = bean.getClass();
             for (Class<?> face : clazz.getInterfaces()) {
-                // 1，创建代理
+                // 2，创建代理
                 proxyMap.putIfAbsent(face.getName(), new Invoker() {
                     @Override
                     public InvokerResult invoke(String methodName, Class<?>[] paramTypes, Object[] paramValues) {
@@ -62,8 +65,7 @@ public final class ServerProxyFactory {
                         return result;
                     }
                 });
-                // 2，启动服务端
-                OrpcServerPool.buildServer(face.getName(), new InetSocketAddress(address, Configuration.getProperty(Constant.OPENRPC_SERVICE_PORT)), new BizServerCallback());
+
                 // 3，服务注册
                 register.registry(face.getName(), serviceAddress, "providers");
             }

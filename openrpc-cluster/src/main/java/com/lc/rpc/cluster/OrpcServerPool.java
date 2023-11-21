@@ -13,22 +13,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author gujixian
  * @since 2023/11/20
  */
 public class OrpcServerPool {
-    private static final Map<String, OrpcServer> ssMap = new ConcurrentHashMap<>();
     private static final Map<String, List<OrpcServer>> csMap = new ConcurrentHashMap<>();
+    private static volatile OrpcServer serverServer;
 
     // 构建Server
-    public static void buildServer(String serviceName, InetSocketAddress address, ServerCallback serverCallback) {
-        ssMap.putIfAbsent(serviceName, new NettyServer(address, serverCallback));
-    }
-
-    public static OrpcServer getServerServer(String serviceName) {
-        return ssMap.get(serviceName);
+    public static void buildServer(InetSocketAddress address, ServerCallback serverCallback) {
+        if (serverServer == null) {
+            synchronized (OrpcServer.class) {
+                if (serverServer == null) {
+                    serverServer = new NettyServer(address, serverCallback);
+                }
+            }
+        }
     }
 
     // TODO: 2023/11/21 负载均衡
@@ -38,10 +41,16 @@ public class OrpcServerPool {
             ServiceRegister register = new ZkServiceRegister();
             List<String> discover = register.discover(serviceName);
             // 遍历构建 OrpcServer 并启动
+            CountDownLatch latch = new CountDownLatch(discover.size());
             List<OrpcServer> serverList = new ArrayList<>();
             for (String addressString : discover) {
                 String[] address = addressString.split(":");
-                serverList.add(new NettyClient(new InetSocketAddress(address[0], Integer.parseInt(address[1]))));
+                serverList.add(new NettyClient(new InetSocketAddress(address[0], Integer.parseInt(address[1])), latch));
+            }
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
             csMap.put(serviceName, serverList);
         }

@@ -11,6 +11,6 @@ import com.lc.rpc.harbor.annotation.OrpcService;
 public class HelloServiceServer implements HelloService {
     @Override
     public String sayHello(String name) {
-        return "hi," + name;
+        return "hello," + name;
     }
 }
