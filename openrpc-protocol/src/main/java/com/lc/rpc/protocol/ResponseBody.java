@@ -7,6 +7,8 @@ import java.io.Serializable;
  * @since 2023/11/19
  */
 public class ResponseBody implements Serializable {
+    private Object result;
+
     public Object getResult() {
         return result;
     }
@@ -15,5 +17,4 @@ public class ResponseBody implements Serializable {
         this.result = result;
     }
 
-    private Object result;
 }

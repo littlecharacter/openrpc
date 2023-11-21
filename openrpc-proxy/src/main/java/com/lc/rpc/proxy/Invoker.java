@@ -5,5 +5,5 @@ package com.lc.rpc.proxy;
  * @since 2023/11/21
  */
 public interface Invoker {
-    InvokerResult invoke(String methodName, Class<?>[] paramTypes, Object[] paramValues) throws NoSuchMethodException;
+    InvokerResult invoke(String methodName, Class<?>[] paramTypes, Object[] paramValues);
 }

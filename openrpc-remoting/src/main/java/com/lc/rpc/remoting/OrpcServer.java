@@ -1,5 +1,7 @@
 package com.lc.rpc.remoting;
 
+import io.netty.buffer.ByteBuf;
+
 /**
  * @author gujixian
  * @since 2023/11/20
@@ -7,5 +9,5 @@ package com.lc.rpc.remoting;
 public interface OrpcServer {
     void startServer();
 
-    void sendMsg(byte[] msg);
+    void sendMsg(ByteBuf msgBuf);
 }

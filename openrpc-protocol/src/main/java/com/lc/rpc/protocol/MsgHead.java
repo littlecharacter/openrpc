@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
  * @since 2023/10/19
  */
 public class MsgHead implements Serializable {
+    public static final int MSG_HEAD_LENGTH = 16;
     private static final int REQUEST_ID_OFFSET = 4;
     private static final int DATA_LENGTH_OFFSET = 12;
     // private byte magicHigh;
