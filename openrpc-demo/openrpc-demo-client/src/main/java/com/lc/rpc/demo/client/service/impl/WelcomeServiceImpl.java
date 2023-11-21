@@ -1,8 +1,8 @@
 package com.lc.rpc.demo.client.service.impl;
 
+import com.lc.rpc.annotation.OrpcReference;
 import com.lc.rpc.demo.client.service.WelcomeService;
 import com.lc.rpc.demo.contract.HelloService;
-import com.lc.rpc.harbor.annotation.OrpcReference;
 import org.springframework.stereotype.Service;
 
 /**

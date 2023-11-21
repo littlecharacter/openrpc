@@ -1,7 +1,7 @@
 package com.lc.rpc.demo.server;
 
+import com.lc.rpc.annotation.OrpcService;
 import com.lc.rpc.demo.contract.HelloService;
-import com.lc.rpc.harbor.annotation.OrpcService;
 
 /**
  * @author gujixian

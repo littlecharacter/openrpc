@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>com.lc</groupId>
-            <artifactId>openrpc-consumer</artifactId>
+            <artifactId>openrpc-all</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

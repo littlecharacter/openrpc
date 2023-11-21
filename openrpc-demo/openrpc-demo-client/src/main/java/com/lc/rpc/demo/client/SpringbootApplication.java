@@ -1,6 +1,6 @@
 package com.lc.rpc.demo.client;
 
-import com.lc.rpc.harbor.annotation.EnableOrpcConsumer;
+import com.lc.rpc.annotation.EnableOrpcConsumer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

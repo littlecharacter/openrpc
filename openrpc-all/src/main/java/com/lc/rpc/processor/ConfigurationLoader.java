@@ -1,9 +1,9 @@
-package com.lc.rpc.harbor.processor;
+package com.lc.rpc.processor;
 
+import com.lc.rpc.annotation.EnableOrpc;
+import com.lc.rpc.annotation.EnableOrpcConsumer;
+import com.lc.rpc.annotation.EnableOrpcProvider;
 import com.lc.rpc.common.Configuration;
-import com.lc.rpc.harbor.annotation.EnableOrpc;
-import com.lc.rpc.harbor.annotation.EnableOrpcConsumer;
-import com.lc.rpc.harbor.annotation.EnableOrpcProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
