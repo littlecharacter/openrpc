@@ -74,7 +74,11 @@ public class NettyClient extends AbstractServer {
         ObjectSerializer serializer = new KryoSerializer();
         byte[] bodyBytes = serializer.serialize(requestBody);
         msgHead.setDataLength(bodyBytes.length);
-        channel.writeAndFlush(Unpooled.wrappedBuffer(msgHead.getHead(), bodyBytes));
+        try {
+            channel.writeAndFlush(Unpooled.wrappedBuffer(msgHead.getHead(), bodyBytes)).sync();
+        } catch (Exception e) {
+            throw new RuntimeException("通道（" + channel.remoteAddress().getHostString() + "）异常：" + e.getMessage());
+        }
     }
 
     private static class ReceiveHandler extends ChannelInboundHandlerAdapter {

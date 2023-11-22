@@ -44,7 +44,20 @@ public class ClientProxyFactory {
                             CompletableFuture<Object> cf = new CompletableFuture<>();
                             ClientCallback.addCallback(msgHead.getRequestId(), cf);
                             // 4，调用服务
-                            server.sendMsg(new Message<>(msgHead, requestBody));
+                            int retryTimes = 3;
+                            while (true) {
+                                try {
+                                    server.sendMsg(new Message<>(msgHead, requestBody));
+                                    break;
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                    server = OrpcServerPool.getClientServer(clazz.getName());
+                                    retryTimes--;
+                                    if (retryTimes <= 0) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                            }
                             // 5，获取结果
                             return cf.get();
                         }

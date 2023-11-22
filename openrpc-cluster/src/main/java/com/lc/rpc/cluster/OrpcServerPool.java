@@ -54,7 +54,8 @@ public class OrpcServerPool {
             }
             csMap.put(serviceName, serverList);
         }
-        return csMap.get(serviceName).get(new Random().nextInt(csMap.get(serviceName).size()));    }
+        return csMap.get(serviceName).get(new Random().nextInt(csMap.get(serviceName).size()));
+    }
 
     // TODO: 2023/10/21  定时拉取注册中心，更新 csMap
 }
