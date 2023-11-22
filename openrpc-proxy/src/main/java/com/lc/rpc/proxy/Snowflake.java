@@ -69,10 +69,10 @@ public final class Snowflake {
             sequence = new Random().nextInt(100);
         }
         lastTimestamp = timestamp;
-        System.out.println("timestamp:" + (timestamp - baseTimestamp));
-        System.out.println("datecenterId:" + datecenterId);
-        System.out.println("workerId:" + workerId);
-        System.out.println("sequence:" + sequence);
+        // System.out.println("timestamp:" + (timestamp - baseTimestamp));
+        // System.out.println("datecenterId:" + datecenterId);
+        // System.out.println("workerId:" + workerId);
+        // System.out.println("sequence:" + sequence);
         return ((timestamp - baseTimestamp) << relativeTimestampBits)
                 | (datecenterId << relativeDatecenterIdBits)
                 | (workerId << relativeWorkerIdBits)

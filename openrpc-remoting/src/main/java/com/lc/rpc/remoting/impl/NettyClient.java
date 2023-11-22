@@ -1,11 +1,16 @@
 package com.lc.rpc.remoting.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.lc.rpc.protocol.Message;
+import com.lc.rpc.protocol.MsgHead;
+import com.lc.rpc.protocol.RequestBody;
 import com.lc.rpc.protocol.ResponseBody;
 import com.lc.rpc.remoting.callback.ClientCallback;
 import com.lc.rpc.remoting.decoder.MsgDecoder;
+import com.lc.rpc.serializer.ObjectSerializer;
+import com.lc.rpc.serializer.impl.KryoSerializer;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
@@ -15,6 +20,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -62,15 +68,22 @@ public class NettyClient extends AbstractServer {
     }
 
     @Override
-    public void sendMsg(ByteBuf msgBuf) {
-        channel.writeAndFlush(msgBuf);
+    public void sendMsg(Message<?> message) {
+        MsgHead msgHead = message.getMsgHead();
+        RequestBody requestBody = (RequestBody) message.getMsgBody();
+        ObjectSerializer serializer = new KryoSerializer();
+        byte[] bodyBytes = serializer.serialize(requestBody);
+        msgHead.setDataLength(bodyBytes.length);
+        channel.writeAndFlush(Unpooled.wrappedBuffer(msgHead.getHead(), bodyBytes));
     }
 
     private static class ReceiveHandler extends ChannelInboundHandlerAdapter {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            Message<ResponseBody> message = (Message<ResponseBody>) msg;
+            Message<?> message = (Message<?>) msg;
+            SocketAddress remoteAddress = ctx.channel().remoteAddress();
+            System.out.println("Client：收到Server（" + remoteAddress.toString() + "）的回复 - " + JSON.toJSONString(message));
             ClientCallback.runCallback(message);
         }
 

@@ -1,7 +1,7 @@
 package com.lc.rpc.remoting.impl;
 
+import com.lc.rpc.protocol.Message;
 import com.lc.rpc.remoting.OrpcServer;
-import io.netty.buffer.ByteBuf;
 
 import java.net.InetSocketAddress;
 
@@ -20,5 +20,5 @@ public abstract class AbstractServer implements OrpcServer {
     public void startServer() {}
 
     @Override
-    public void sendMsg(ByteBuf msgBuf) {}
+    public void sendMsg(Message<?> message) {}
 }

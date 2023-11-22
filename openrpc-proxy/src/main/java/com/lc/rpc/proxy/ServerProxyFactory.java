@@ -10,10 +10,6 @@ import com.lc.rpc.protocol.ResponseBody;
 import com.lc.rpc.register.ServiceRegister;
 import com.lc.rpc.register.impl.ZkServiceRegister;
 import com.lc.rpc.remoting.callback.ServerCallback;
-import com.lc.rpc.serializer.ObjectSerializer;
-import com.lc.rpc.serializer.impl.KryoSerializer;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -78,19 +74,15 @@ public final class ServerProxyFactory {
 
     private static class BizServerCallback implements ServerCallback {
         @Override
-        public ByteBuf call(Message<RequestBody> message) {
+        public Message<?> call(Message<?> message) {
             MsgHead msgHead = message.getMsgHead();
-            RequestBody requestBody = message.getMsgBody();
+            RequestBody requestBody = (RequestBody) message.getMsgBody();
             Invoker invoker = getProxy(requestBody.getClassName());
             InvokerResult invokerResult = invoker.invoke(requestBody.getMethodName(), requestBody.getParamTypes(), requestBody.getParamValues());
             // TODO: 2023/10/21 状态待处理
             ResponseBody responseBody = new ResponseBody();
             responseBody.setResult(invokerResult.getResult());
-            ObjectSerializer serializer = new KryoSerializer();
-            byte[] responseBytes = serializer.serialize(responseBody);
-            msgHead.setFlag((byte) -1);
-            msgHead.setDataLength(responseBytes.length);
-            return Unpooled.wrappedBuffer(msgHead.getHead(), responseBytes);
+            return new Message<>(msgHead, responseBody);
         }
     }
 }

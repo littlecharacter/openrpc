@@ -20,10 +20,10 @@ public final class ClientCallback {
         CALLBACK_CENTER.putIfAbsent(requestId, cf);
     }
 
-    public static void runCallback(Message<ResponseBody> message) {
+    public static void runCallback(Message<?> message) {
         long requestId = message.getMsgHead().getRequestId();
         CompletableFuture<Object> cf = CALLBACK_CENTER.get(requestId);
-        cf.complete(message.getMsgBody().getResult());
+        cf.complete(((ResponseBody) message.getMsgBody()).getResult());
         CALLBACK_CENTER.remove(requestId);
     }
 }
