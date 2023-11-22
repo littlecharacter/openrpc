@@ -36,7 +36,7 @@ public class ClientProxyFactory {
                             msgHead.setMagicHigh((byte) 1);
                             msgHead.setMagicLow((byte) 2);
                             msgHead.setFlag((byte) 0);
-                            msgHead.setRequestId(System.currentTimeMillis());
+                            msgHead.setRequestId(Snowflake.instance().getId());
                             RequestBody msgBody = new RequestBody();
                             msgBody.setClassName(clazz.getName());
                             msgBody.setMethodName(method.getName());
