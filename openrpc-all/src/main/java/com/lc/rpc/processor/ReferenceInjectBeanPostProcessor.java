@@ -46,7 +46,6 @@ public class ReferenceInjectBeanPostProcessor implements BeanPostProcessor, Bean
                 String name = field.getName();
                 Class<?> type = field.getType();
                 field.setAccessible(true);
-                // TODO: 2023/5/6 通过动态代理来获取对象，这里简便起见直接 new 个对象
                 try {
                     Object obj;
                     if (beanFactory.containsBeanDefinition(name)) {
